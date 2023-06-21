@@ -1,0 +1,74 @@
+.hourly-info {
+  padding: 8vh 5vw 5vh 5vw;
+}
+
+.card {
+  background-color: #393646;
+  color: #fff;
+  transition: transform 0.3s ease;
+
+  .icon {
+    width: 3rem;
+    filter: invert(100%);
+  }
+}
+
+.card:hover {
+  background-color: #fff;
+  color: #000;
+  transform: scale(1.1);
+  z-index: 1;
+
+  .icon {
+    filter: invert(0%);
+  }
+}
+
+.cards {
+  margin-top: 5vh;
+}
+
+.col {
+  max-width: 8vw;
+}
+
+.temperature {
+  font-size: 2rem;
+}
+
+.features {
+  padding: 0 2vw;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+@media (min-width: 1200px) {
+  .features {
+    font-size: 1.6rem;
+  }
+
+  .temperature {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .features {
+    font-size: 1.5rem;
+  }
+
+  .temperature {
+    font-size: 1.8rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .features {
+    font-size: 1.4rem;
+  }
+
+  .temperature {
+    font-size: 1.6rem;
+  }
+}

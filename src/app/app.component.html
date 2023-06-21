@@ -1,10 +1,23 @@
 <main class="container">
   <div class="row">
-    <div class="col-sm">
+    <div class="col-md-5 no-padding">
       <app-current-weather></app-current-weather>
     </div>
-    <div class="col-sm">
+    <div class="col-md-7">
       <app-daily-forecast></app-daily-forecast>
     </div>
   </div>
 </main>
+<div class="container options">
+  <div class="form-check form-switch">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      role="switch"
+      id="flexSwitchCheckDefault"
+    />
+    <label class="form-check-label" for="flexSwitchCheckDefault"
+      >Farenhiet</label
+    >
+  </div>
+</div>
