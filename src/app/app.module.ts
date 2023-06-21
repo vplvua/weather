@@ -1,20 +1,21 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { CurrentWeatherComponent } from './current-weather/current-weather.component';
 import { DailyForecastComponent } from './daily-forecast/daily-forecast.component';
+import { DropdownComponent } from './dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CurrentWeatherComponent,
-    DailyForecastComponent
+    DailyForecastComponent,
+    DropdownComponent,
   ],
-  imports: [
-    BrowserModule
-  ],
+  imports: [BrowserModule, NgbModule, NgbDropdownModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
