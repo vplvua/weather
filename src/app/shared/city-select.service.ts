@@ -1,15 +1,32 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+import { City } from './city.interface';
+import { Coordinates } from './city.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CitySelectService {
-  selectedCity$: Subject<string> = new Subject<string>();
+  selectedCity$: BehaviorSubject<City> = new BehaviorSubject<City>({
+    name: 'Kyiv',
+    coordinates: {
+      lat: 50.4501,
+      lng: 30.5234,
+    },
+  });
 
   constructor() {}
 
-  selectCity(city: string) {
-    this.selectedCity$.next(city);
+  setSelectedCity(city: string, coordinates: Coordinates) {
+    const selectedCity: City = {
+      name: city,
+      coordinates: coordinates,
+    };
+    this.selectedCity$.next(selectedCity);
+  }
+
+  getSelectedCity(): Observable<City> {
+    return this.selectedCity$.asObservable();
   }
 }

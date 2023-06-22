@@ -14,6 +14,7 @@ import { SpeedConversionPipe } from './shared/speed-conversion.pipe';
 import { SpeedUnitPipe } from './shared/speed-unit.pipe';
 import { WeatherIconDirective } from './shared/weather-icon.directive';
 import { WeatherService } from './shared/weather.service';
+import { WeatherCodeService } from './shared/weather-code.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { WeatherService } from './shared/weather.service';
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [WeatherService],
+  providers: [WeatherService, WeatherCodeService],
   bootstrap: [AppComponent],
   schemas: [],
 })

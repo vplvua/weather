@@ -12,7 +12,7 @@
       <button
         ngbDropdownItem
         *ngFor="let city of cities"
-        (click)="selectCity(city)"
+        (click)="setSelectedCity(city)"
       >
         {{ city }}
       </button>

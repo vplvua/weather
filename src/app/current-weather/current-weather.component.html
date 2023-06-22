@@ -3,23 +3,33 @@
   <div class="location">
     <div class="row">
       <div class="col">
-        <h3>{{ selectedCity }}</h3>
+        <h3>{{ getCityName() }}</h3>
       </div>
       <div class="col text-end"><app-dropdown></app-dropdown></div>
     </div>
   </div>
-  <div class="date"><h4>21.06.2023</h4></div>
+  <div class="date">
+    <h4>{{ currentDate | date : "dd.MM.yyyy" }}</h4>
+  </div>
   <div class="weather-icon">
     <img appWeatherIcon [weatherIcon]="weatherIcon" class="icon" />
   </div>
-  <div class="temperature">
+  <div
+    class="temperature"
+    *ngIf="cityWeather && cityWeather.weather.length > 0"
+  >
     <h1>
       {{
-        temperature
+        getTemperature()
           | temperatureConversion : unitSystem
           | temperatureUnit : unitSystem
       }}
     </h1>
   </div>
-  <div class="description"><h2>Sunny</h2></div>
+  <div
+    class="description"
+    *ngIf="cityWeather && cityWeather.weather.length > 0"
+  >
+    <h2>{{ geetWeatherDescription(cityWeather.weather[0].weatherCode) }}</h2>
+  </div>
 </div>

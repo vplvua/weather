@@ -1,17 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 
 import { environment } from '../../environment';
-import { Subject } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subject,
+  catchError,
+  throwError,
+} from 'rxjs';
 import { CityWeather } from './city-weather.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WeatherService {
-  url: string = environment.tomorrowURL;
+  url: string = environment.tomorrowUrl;
   token: string = environment.tomorrowToken;
-  location = [50.4501, 30.5234];
+  // location = [50.4501, 30.5234];
   fields = [
     'precipitationProbability',
     'windSpeed',
@@ -22,49 +32,60 @@ export class WeatherService {
   units = 'metric';
   timezone = 'Europe/Kiev';
   timestamp = '1h';
-  weather$: Subject<CityWeather[]> = new Subject<CityWeather[]>();
-  selectedCity = 'Lviv';
+  cityWeather$: BehaviorSubject<CityWeather> = new BehaviorSubject<CityWeather>(
+    {
+      city: 'Kyiv',
+      weather: [],
+    }
+  );
 
   constructor(private http: HttpClient) {}
 
-  getWeather() {
+  getCityWeather(city: string, lat: number, lng: number) {
     const params = new HttpParams()
-      .set('location', this.location.join(','))
+      .set('location', `${lat},${lng}`)
       .set('fields', this.fields.join(','))
       .set('units', this.units)
       .set('timezone', this.timezone)
       .set('timestamp', this.timestamp)
       .set('apikey', this.token);
 
-    this.http.get<any>(this.url, { params }).subscribe((response) => {
-      const cityWeather: CityWeather = {
-        city: this.selectedCity,
-        weather: response.data.timelines[0].intervals.slice(0, 5).map(
-          (interval: {
-            values: {
-              humidity: any;
-              precipitationProbability: any;
-              temperature: any;
-              weatherCode: any;
-              windSpeed: any;
-            };
-          }) => ({
-            humidity: interval.values.humidity,
-            precipitationProbability: interval.values.precipitationProbability,
-            temperature: interval.values.temperature,
-            weatherCode: interval.values.weatherCode,
-            windSpeed: interval.values.windSpeed,
-          })
-        ),
-      };
+    this.http
+      .get<any>(this.url, { params })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.log('HTTP Error:', error);
+          return throwError('Помилка при отриманні даних з сервера');
+        })
+      )
+      .subscribe((response) => {
+        const cityWeather: CityWeather = {
+          city: city,
+          weather: response.data.timelines[0].intervals.slice(0, 5).map(
+            (interval: {
+              values: {
+                humidity: any;
+                precipitationProbability: any;
+                temperature: any;
+                weatherCode: any;
+                windSpeed: any;
+              };
+            }) => ({
+              humidity: interval.values.humidity,
+              precipitationProbability:
+                interval.values.precipitationProbability,
+              temperature: interval.values.temperature,
+              weatherCode: interval.values.weatherCode,
+              windSpeed: interval.values.windSpeed,
+            })
+          ),
+        };
 
-      this.weather$.next([cityWeather]);
-    });
-
-    return this.weather$.asObservable();
+        this.cityWeather$.next(cityWeather);
+      });
   }
 
-  updateWeather(data: CityWeather[]) {
-    this.weather$.next(data);
+  getCityWeather$(): Observable<CityWeather> {
+    return this.cityWeather$.asObservable();
   }
 }
