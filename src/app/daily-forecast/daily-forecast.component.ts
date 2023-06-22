@@ -14,6 +14,7 @@ import { UnitSystem } from '../shared/unit-system.enum';
 export class DailyForecastComponent {
   @Input() unitSystem: UnitSystem;
   temperature = [26.1, 26.7, 27.5, 28.2];
+  weatherIcon = 'cloudy';
 
   constructor() {
     this.unitSystem = UnitSystem.Metric;

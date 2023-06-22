@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { UnitSystem } from './shared/unit-system.enum';
+import { WheatherIconDirective } from './shared/wheather-icon.directive';
 
 @Component({
   selector: 'app-root',

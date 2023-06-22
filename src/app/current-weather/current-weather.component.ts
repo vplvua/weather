@@ -12,6 +12,7 @@ import { UnitSystem } from '../shared/unit-system.enum';
 export class CurrentWeatherComponent {
   @Input() unitSystem: UnitSystem;
   temperature = 26;
+  weatherIcon = 'sunny';
 
   constructor() {
     this.unitSystem = UnitSystem.Metric;

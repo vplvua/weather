@@ -12,6 +12,7 @@ import { TemperatureConversionPipe } from './shared/temperature-conversion.pipe'
 import { TemperatureUnitPipe } from './shared/temperature-unit.pipe';
 import { SpeedConversionPipe } from './shared/speed-conversion.pipe';
 import { SpeedUnitPipe } from './shared/speed-unit.pipe';
+import { WheatherIconDirective } from './shared/wheather-icon.directive';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SpeedUnitPipe } from './shared/speed-unit.pipe';
     TemperatureUnitPipe,
     SpeedConversionPipe,
     SpeedUnitPipe,
+    WheatherIconDirective,
   ],
   imports: [
     BrowserModule,
@@ -34,5 +36,6 @@ import { SpeedUnitPipe } from './shared/speed-unit.pipe';
   ],
   providers: [],
   bootstrap: [AppComponent],
+  schemas: [],
 })
 export class AppModule {}
