@@ -8,8 +8,16 @@
   </div>
   <div class="date"><h4>21.06.2023</h4></div>
   <div class="weather-icon">
-    <img src="../../assets/img/sunny.svg" class="icon" />
+    <img src="../../assets/images/sunny.svg" class="icon" />
   </div>
-  <div class="temperature"><h1>26°C</h1></div>
+  <div class="temperature">
+    <h1>
+      {{
+        temperature
+          | temperatureConversion : unitSystem
+          | temperatureUnit : unitSystem
+      }}
+    </h1>
+  </div>
   <div class="description"><h2>Sunny</h2></div>
 </div>
