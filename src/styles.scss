@@ -10,3 +10,8 @@ body {
   font-family: "Montserrat", sans-serif;
   background-color: #343d4b !important;
 }
+
+.form-switch .form-check-input:checked {
+  background-color: #393646;
+  border-color: #222831;
+}
