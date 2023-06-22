@@ -9,7 +9,13 @@
       Select city
     </button>
     <div ngbDropdownMenu aria-labelledby="dropdown">
-      <button ngbDropdownItem *ngFor="let city of cities">{{ city }}</button>
+      <button
+        ngbDropdownItem
+        *ngFor="let city of cities"
+        (click)="selectCity(city)"
+      >
+        {{ city }}
+      </button>
     </div>
   </div>
 </div>
