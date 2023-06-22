@@ -13,6 +13,7 @@ import { TemperatureUnitPipe } from './shared/temperature-unit.pipe';
 import { SpeedConversionPipe } from './shared/speed-conversion.pipe';
 import { SpeedUnitPipe } from './shared/speed-unit.pipe';
 import { WheatherIconDirective } from './shared/wheather-icon.directive';
+import { WheatherService } from './shared/wheather.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { WheatherIconDirective } from './shared/wheather-icon.directive';
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [WheatherService],
   bootstrap: [AppComponent],
   schemas: [],
 })
