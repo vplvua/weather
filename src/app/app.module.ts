@@ -9,6 +9,8 @@ import { DailyForecastComponent } from './daily-forecast/daily-forecast.componen
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { TemperatureConversionPipe } from './shared/temperature-conversion.pipe';
 import { TemperatureUnitPipe } from './shared/temperature-unit.pipe';
+import { SpeedConversionPipe } from './shared/speed-conversion.pipe';
+import { SpeedUnitPipe } from './shared/speed-unit.pipe';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { TemperatureUnitPipe } from './shared/temperature-unit.pipe';
     DropdownComponent,
     TemperatureConversionPipe,
     TemperatureUnitPipe,
+    SpeedConversionPipe,
+    SpeedUnitPipe,
   ],
   imports: [
     BrowserModule,

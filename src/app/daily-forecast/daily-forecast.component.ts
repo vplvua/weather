@@ -2,6 +2,8 @@ import { Component, Input } from '@angular/core';
 
 import { TemperatureConversionPipe } from '../shared/temperature-conversion.pipe';
 import { TemperatureUnitPipe } from '../shared/temperature-unit.pipe';
+import { SpeedConversionPipe } from '../shared/speed-conversion.pipe';
+import { SpeedUnitPipe } from '../shared/speed-unit.pipe';
 import { UnitSystem } from '../shared/unit-system.enum';
 
 @Component({
