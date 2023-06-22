@@ -1,0 +1,32 @@
+{
+  "Dnipro": {
+    "location": {
+      "lat": 48.464717,
+      "lng": 35.046183
+    }
+  },
+  "Kyiv": {
+    "location": {
+      "lat": 50.4501,
+      "lng": 30.5234
+    }
+  },
+  "Kharkiv": {
+    "location": {
+      "lat": 49.9935,
+      "lng": 36.230383
+    }
+  },
+  "Lviv": {
+    "location": {
+      "lat": 49.839683,
+      "lng": 24.029717
+    }
+  },
+  "Odesa": {
+    "location": {
+      "lat": 46.482526,
+      "lng": 30.7233095
+    }
+  }
+}
