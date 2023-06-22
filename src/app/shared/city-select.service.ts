@@ -5,11 +5,11 @@ import { Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class CitySelectService {
-  selectedCity: Subject<string> = new Subject<string>();
+  selectedCity$: Subject<string> = new Subject<string>();
 
   constructor() {}
 
   selectCity(city: string) {
-    this.selectedCity.next(city);
+    this.selectedCity$.next(city);
   }
 }

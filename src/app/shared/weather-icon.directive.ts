@@ -1,9 +1,9 @@
 import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 
 @Directive({
-  selector: '[appWheatherIcon]',
+  selector: '[appWeatherIcon]',
 })
-export class WheatherIconDirective implements OnInit {
+export class WeatherIconDirective implements OnInit {
   @Input() weatherIcon: string = '';
 
   constructor(private elementRef: ElementRef) {}

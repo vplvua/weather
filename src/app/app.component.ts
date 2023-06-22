@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { UnitSystem } from './shared/unit-system.enum';
-import { WheatherIconDirective } from './shared/wheather-icon.directive';
-import { WheatherService } from './shared/wheather.service';
+import { WeatherService } from './shared/weather.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +13,7 @@ export class AppComponent implements OnInit {
   unitSystem = UnitSystem.Metric;
   toggleUnitSystem = new FormControl(false);
 
-  constructor(private wheatherService: WheatherService) {
+  constructor(private weatherService: WeatherService) {
     this.toggleUnitSystem.valueChanges.subscribe((value) => {
       if (value) {
         this.unitSystem = UnitSystem.Imperial;
@@ -25,8 +24,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.wheatherService.getWheather().subscribe((response) => {
-      console.log(response);
+    this.weatherService.getWeather().subscribe((response) => {
+      console.log(JSON.stringify(response));
     });
   }
 }

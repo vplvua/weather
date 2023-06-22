@@ -21,7 +21,7 @@ export class CurrentWeatherComponent {
   }
 
   ngOnInit() {
-    this.citySelectService.selectedCity.subscribe((city) => {
+    this.citySelectService.selectedCity$.subscribe((city) => {
       this.selectedCity = city;
     });
   }
