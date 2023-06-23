@@ -9,7 +9,12 @@ export class WeatherIconDirective implements OnInit {
   constructor(private elementRef: ElementRef) {}
 
   ngOnInit(): void {
-    const imagePath = `../../assets/images/${this.weatherIcon}.svg`;
+    const imagePath = `/assets/images/${this.weatherIcon}.svg`;
+    this.elementRef.nativeElement.src = imagePath;
+  }
+
+  ngOnChanges() {
+    const imagePath = `/assets/images/${this.weatherIcon}.svg`;
     this.elementRef.nativeElement.src = imagePath;
   }
 }

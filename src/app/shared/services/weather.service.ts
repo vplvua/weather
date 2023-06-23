@@ -5,7 +5,7 @@ import {
   HttpParams,
 } from '@angular/common/http';
 
-import { environment } from '../../environment';
+import { environment } from 'src/environment';
 import {
   BehaviorSubject,
   Observable,
@@ -13,7 +13,7 @@ import {
   catchError,
   throwError,
 } from 'rxjs';
-import { CityWeather } from './city-weather.interface';
+import { CityWeather } from '../interfaces/city-weather.interface';
 import { StorageService } from './storage.service';
 
 @Injectable({

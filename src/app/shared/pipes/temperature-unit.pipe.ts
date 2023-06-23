@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { UnitSystem } from './unit-system.enum';
+import { UnitSystem } from '../unit-system.enum';
 
 @Pipe({
   name: 'temperatureUnit',

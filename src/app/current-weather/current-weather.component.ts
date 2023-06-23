@@ -1,15 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { TemperatureConversionPipe } from '../shared/temperature-conversion.pipe';
-import { TemperatureUnitPipe } from '../shared/temperature-unit.pipe';
 import { UnitSystem } from '../shared/unit-system.enum';
-import { CitySelectService } from '../shared/city-select.service';
-import { WeatherService } from '../shared/weather.service';
-import { CityWeather } from '../shared/city-weather.interface';
-import { City } from '../shared/city.interface';
-import { WeatherCodeService } from '../shared/weather-code.service';
-import { StorageService } from '../shared/storage.service';
+import { CitySelectService } from '../shared/services/city-select.service';
+import { WeatherService } from '../shared/services/weather.service';
+import { CityWeather } from '../shared/interfaces/city-weather.interface';
+import { City } from '../shared/interfaces/city.interface';
+import { WeatherCodeService } from '../shared/services/weather-code.service';
+import { StorageService } from '../shared/services/storage.service';
 
 @Component({
   selector: 'app-current-weather',
@@ -19,7 +17,6 @@ import { StorageService } from '../shared/storage.service';
 export class CurrentWeatherComponent {
   @Input() unitSystem: UnitSystem;
   currentDate: Date = new Date();
-  temperature = 0;
   weatherIcon = 'sunny';
   selectedCity: City = {
     name: 'Kyiv',
@@ -51,28 +48,24 @@ export class CurrentWeatherComponent {
     private storageService: StorageService
   ) {
     this.unitSystem = UnitSystem.Metric;
+  }
 
-    // this.subscription.add(
-    //   this.weatherService.getCityWeather$().subscribe((cityWeather) => {
-    //     this.cityWeather = cityWeather;
-    //   })
-    // );
-
-    const selectedCity = this.citySelectService.getSelectedCitySync();
-    this.selectedCity = selectedCity;
-    const storedCityWeather = this.storageService.selectCityWeather(
-      selectedCity.name
+  ngOnInit() {
+    this.subscription.add(
+      this.citySelectService.getSelectedCity().subscribe((selectedCity) => {
+        const storedCityWeather = this.storageService.selectCityWeather(
+          selectedCity.name
+        );
+        if (
+          storedCityWeather &&
+          this.storageService.checkTimestamp(selectedCity.name)
+        ) {
+          this.cityWeather = storedCityWeather;
+        } else {
+          this.fetchCityWeather(selectedCity);
+        }
+      })
     );
-    if (
-      storedCityWeather &&
-      this.storageService.checkTimestamp(selectedCity.name)
-    ) {
-      console.log('we hawe storedCityWeather');
-      this.cityWeather = storedCityWeather;
-    } else {
-      console.log('we need to fetchCityWeather');
-      this.fetchCityWeather(selectedCity);
-    }
   }
 
   getTemperature() {
@@ -85,6 +78,12 @@ export class CurrentWeatherComponent {
 
   geetWeatherDescription(weatherCode: number) {
     return this.weatherCodeService.getWeatherCodeDescription(weatherCode);
+  }
+
+  getWeatherIcon(): string {
+    return this.weatherCodeService.getWeatherCodeIcon(
+      this.cityWeather.weather[0].weatherCode
+    );
   }
 
   fetchCityWeather(selectedCity: City): void {

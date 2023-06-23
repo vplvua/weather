@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { CitySelectService } from '../shared/city-select.service';
-import { WeatherService } from '../shared/weather.service';
-import { StorageService } from '../shared/storage.service';
+import { CitySelectService } from '../shared/services/city-select.service';
+import { WeatherService } from '../shared/services/weather.service';
+import { StorageService } from '../shared/services/storage.service';
 
 @Component({
   selector: 'app-dropdown',
@@ -30,7 +30,7 @@ export class DropdownComponent {
 
   setSelectedCity(city: string) {
     const coordinates = this.cityLocations[city].location;
-    this.citySelectService.setSelectedCity(city, coordinates);
+    // this.citySelectService.setSelectedCity(city, coordinates);
     // this.weatherService.getCityWeather(city, coordinates.lat, coordinates.lng);
 
     // const coordinates = this.cityLocations[city].location;

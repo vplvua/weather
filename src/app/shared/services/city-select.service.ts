@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { City } from './city.interface';
-import { Coordinates } from './city.interface';
+import { City } from '../interfaces/city.interface';
+import { Coordinates } from '../interfaces/city.interface';
 
 @Injectable({
   providedIn: 'root',

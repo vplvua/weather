@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { CityWeather } from './city-weather.interface';
+import { CityWeather } from '../interfaces/city-weather.interface';
 
 @Injectable({
   providedIn: 'root',

@@ -8,13 +8,13 @@ import { AppComponent } from './app.component';
 import { CurrentWeatherComponent } from './current-weather/current-weather.component';
 import { DailyForecastComponent } from './daily-forecast/daily-forecast.component';
 import { DropdownComponent } from './dropdown/dropdown.component';
-import { TemperatureConversionPipe } from './shared/temperature-conversion.pipe';
-import { TemperatureUnitPipe } from './shared/temperature-unit.pipe';
-import { SpeedConversionPipe } from './shared/speed-conversion.pipe';
-import { SpeedUnitPipe } from './shared/speed-unit.pipe';
+import { TemperatureConversionPipe } from './shared/pipes/temperature-conversion.pipe';
+import { TemperatureUnitPipe } from './shared/pipes/temperature-unit.pipe';
+import { SpeedConversionPipe } from './shared/pipes/speed-conversion.pipe';
+import { SpeedUnitPipe } from './shared/pipes/speed-unit.pipe';
 import { WeatherIconDirective } from './shared/weather-icon.directive';
-import { WeatherService } from './shared/weather.service';
-import { WeatherCodeService } from './shared/weather-code.service';
+import { WeatherService } from './shared/services/weather.service';
+import { WeatherCodeService } from './shared/services/weather-code.service';
 
 @NgModule({
   declarations: [

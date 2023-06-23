@@ -3,11 +3,11 @@ import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { UnitSystem } from './shared/unit-system.enum';
-import { WeatherService } from './shared/weather.service';
-import { WeatherCodeService } from './shared/weather-code.service';
-import { CityWeather } from './shared/city-weather.interface';
-import { CitySelectService } from './shared/city-select.service';
-import { StorageService } from './shared/storage.service';
+import { WeatherService } from './shared/services/weather.service';
+import { WeatherCodeService } from './shared/services/weather-code.service';
+import { CityWeather } from './shared/interfaces/city-weather.interface';
+import { CitySelectService } from './shared/services/city-select.service';
+import { StorageService } from './shared/services/storage.service';
 
 @Component({
   selector: 'app-root',

@@ -12,7 +12,7 @@
     <h4>{{ currentDate | date : "dd.MM.yyyy" }}</h4>
   </div>
   <div class="weather-icon">
-    <img appWeatherIcon [weatherIcon]="weatherIcon" class="icon" />
+    <img appWeatherIcon [weatherIcon]="getWeatherIcon()" class="icon" />
   </div>
   <div
     class="temperature"
