@@ -29,4 +29,8 @@ export class CitySelectService {
   getSelectedCity(): Observable<City> {
     return this.selectedCity$.asObservable();
   }
+
+  getSelectedCitySync(): City {
+    return this.selectedCity$.value;
+  }
 }

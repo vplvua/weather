@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { CitySelectService } from '../shared/city-select.service';
 import { WeatherService } from '../shared/weather.service';
+import { StorageService } from '../shared/storage.service';
 
 @Component({
   selector: 'app-dropdown',
@@ -16,7 +17,8 @@ export class DropdownComponent {
   constructor(
     private http: HttpClient,
     private citySelectService: CitySelectService,
-    private weatherService: WeatherService
+    private weatherService: WeatherService,
+    private storageService: StorageService
   ) {}
 
   ngOnInit() {
@@ -29,6 +31,24 @@ export class DropdownComponent {
   setSelectedCity(city: string) {
     const coordinates = this.cityLocations[city].location;
     this.citySelectService.setSelectedCity(city, coordinates);
-    this.weatherService.getCityWeather(city, coordinates.lat, coordinates.lng);
+    // this.weatherService.getCityWeather(city, coordinates.lat, coordinates.lng);
+
+    // const coordinates = this.cityLocations[city].location;
+    const storedCityWeather = this.storageService.selectCityWeather(city);
+
+    if (storedCityWeather && this.storageService.checkTimestamp(city)) {
+      console.log('Using stored data');
+      // Використовувати збережені дані з localStorage
+      this.citySelectService.setSelectedCity(city, coordinates);
+    } else {
+      console.log('Using API data');
+      // Отримати нові дані з API
+      // this.citySelectService.setSelectedCity(city, coordinates);
+      this.weatherService.getCityWeather(
+        city,
+        coordinates.lat,
+        coordinates.lng
+      );
+    }
   }
 }

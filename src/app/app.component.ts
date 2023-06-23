@@ -7,6 +7,7 @@ import { WeatherService } from './shared/weather.service';
 import { WeatherCodeService } from './shared/weather-code.service';
 import { CityWeather } from './shared/city-weather.interface';
 import { CitySelectService } from './shared/city-select.service';
+import { StorageService } from './shared/storage.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,8 @@ export class AppComponent {
   constructor(
     private citySelectService: CitySelectService,
     private weatherService: WeatherService,
-    private weatherCodeService: WeatherCodeService
+    private weatherCodeService: WeatherCodeService,
+    private storageService: StorageService
   ) {
     this.toggleUnitSystem.valueChanges.subscribe((value) => {
       if (value) {
@@ -45,28 +47,55 @@ export class AppComponent {
     );
   }
 
-  private loadCityWeather() {
-    this.subscription.add(
-      this.citySelectService.getSelectedCity().subscribe((city) => {
-        this.selectedCity = city.name;
-        this.weatherService.getCityWeather(
-          city.name,
-          city.coordinates.lat,
-          city.coordinates.lng
-        );
-      })
+  private initializeCityWeather() {
+    const selectedCity = this.citySelectService.getSelectedCitySync();
+    const storedCityWeather = this.storageService.selectCityWeather(
+      selectedCity.name
     );
 
-    this.subscription.add(
-      this.weatherService.getCityWeather$().subscribe((cityWeather) => {
-        this.cityWeather = cityWeather;
-      })
-    );
+    if (
+      storedCityWeather &&
+      !this.storageService.checkTimestamp(selectedCity.name)
+    ) {
+      this.cityWeather = storedCityWeather;
+    } else {
+      this.weatherService.getCityWeather(
+        selectedCity.name,
+        selectedCity.coordinates.lat,
+        selectedCity.coordinates.lng
+      );
+      this.subscription.add(
+        this.weatherService.getCityWeather$().subscribe((cityWeather) => {
+          this.cityWeather = cityWeather;
+          this.storageService.updateCityWeather(cityWeather);
+        })
+      );
+    }
   }
+
+  // private loadCityWeather() {
+  //   this.subscription.add(
+  //     this.citySelectService.getSelectedCity().subscribe((city) => {
+  //       this.selectedCity = city.name;
+  //       this.weatherService.getCityWeather(
+  //         city.name,
+  //         city.coordinates.lat,
+  //         city.coordinates.lng
+  //       );
+  //     })
+  //   );
+
+  //   this.subscription.add(
+  //     this.weatherService.getCityWeather$().subscribe((cityWeather) => {
+  //       this.cityWeather = cityWeather;
+  //     })
+  //   );
+  // }
 
   ngOnInit() {
     this.loadWeatherCodes();
-    this.loadCityWeather();
+    this.initializeCityWeather();
+    // this.loadCityWeather();
   }
 
   ngOnDestroy() {

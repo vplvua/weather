@@ -9,6 +9,7 @@ import { WeatherService } from '../shared/weather.service';
 import { CityWeather } from '../shared/city-weather.interface';
 import { City } from '../shared/city.interface';
 import { WeatherCodeService } from '../shared/weather-code.service';
+import { StorageService } from '../shared/storage.service';
 
 @Component({
   selector: 'app-current-weather',
@@ -29,6 +30,7 @@ export class CurrentWeatherComponent {
   };
   cityWeather: CityWeather = {
     city: '',
+    timestamp: 0,
     weather: [
       {
         humidity: 0,
@@ -45,15 +47,32 @@ export class CurrentWeatherComponent {
   constructor(
     private citySelectService: CitySelectService,
     private weatherService: WeatherService,
-    private weatherCodeService: WeatherCodeService
+    private weatherCodeService: WeatherCodeService,
+    private storageService: StorageService
   ) {
     this.unitSystem = UnitSystem.Metric;
 
-    this.subscription.add(
-      this.weatherService.getCityWeather$().subscribe((cityWeather) => {
-        this.cityWeather = cityWeather;
-      })
+    // this.subscription.add(
+    //   this.weatherService.getCityWeather$().subscribe((cityWeather) => {
+    //     this.cityWeather = cityWeather;
+    //   })
+    // );
+
+    const selectedCity = this.citySelectService.getSelectedCitySync();
+    this.selectedCity = selectedCity;
+    const storedCityWeather = this.storageService.selectCityWeather(
+      selectedCity.name
     );
+    if (
+      storedCityWeather &&
+      this.storageService.checkTimestamp(selectedCity.name)
+    ) {
+      console.log('we hawe storedCityWeather');
+      this.cityWeather = storedCityWeather;
+    } else {
+      console.log('we need to fetchCityWeather');
+      this.fetchCityWeather(selectedCity);
+    }
   }
 
   getTemperature() {
@@ -66,6 +85,20 @@ export class CurrentWeatherComponent {
 
   geetWeatherDescription(weatherCode: number) {
     return this.weatherCodeService.getWeatherCodeDescription(weatherCode);
+  }
+
+  fetchCityWeather(selectedCity: City): void {
+    this.weatherService.getCityWeather(
+      selectedCity.name,
+      selectedCity.coordinates.lat,
+      selectedCity.coordinates.lng
+    );
+    this.subscription.add(
+      this.weatherService.getCityWeather$().subscribe((cityWeather) => {
+        this.cityWeather = cityWeather;
+        this.storageService.updateCityWeather(cityWeather);
+      })
+    );
   }
 
   ngOnDestroy() {

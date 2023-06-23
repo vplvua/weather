@@ -8,5 +8,6 @@ export interface WeatherData {
 
 export interface CityWeather {
   city: string;
+  timestamp: number;
   weather: WeatherData[];
 }

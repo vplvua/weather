@@ -14,6 +14,7 @@ import {
   throwError,
 } from 'rxjs';
 import { CityWeather } from './city-weather.interface';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -35,11 +36,15 @@ export class WeatherService {
   cityWeather$: BehaviorSubject<CityWeather> = new BehaviorSubject<CityWeather>(
     {
       city: 'Kyiv',
+      timestamp: 0,
       weather: [],
     }
   );
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private storageService: StorageService
+  ) {}
 
   getCityWeather(city: string, lat: number, lng: number) {
     const params = new HttpParams()
@@ -59,8 +64,14 @@ export class WeatherService {
         })
       )
       .subscribe((response) => {
+        const currenDate = new Date(
+          response.data.timelines[0].intervals[0].startTime
+        );
+        const timestamp = currenDate.getTime() / 1000;
+
         const cityWeather: CityWeather = {
           city: city,
+          timestamp: timestamp,
           weather: response.data.timelines[0].intervals.slice(0, 5).map(
             (interval: {
               values: {
@@ -82,6 +93,7 @@ export class WeatherService {
         };
 
         this.cityWeather$.next(cityWeather);
+        this.storageService.addCityWeather(cityWeather);
       });
   }
 
