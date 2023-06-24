@@ -81,8 +81,10 @@ export class CurrentWeatherComponent {
   }
 
   getWeatherIcon(): string {
-    return this.weatherCodeService.getWeatherCodeIcon(
-      this.cityWeather.weather[0].weatherCode
+    return (
+      this.weatherCodeService.getWeatherCodeIcon(
+        this.cityWeather.weather[0].weatherCode
+      ) || 'sunny'
     );
   }
 

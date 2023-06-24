@@ -59,7 +59,6 @@ export class WeatherService {
       .get<any>(this.url, { params })
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          console.log('HTTP Error:', error);
           return throwError('Помилка при отриманні даних з сервера');
         })
       )

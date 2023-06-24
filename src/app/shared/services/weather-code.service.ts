@@ -17,7 +17,6 @@ export class WeatherCodeService {
   private loadWeatherCodes() {
     this.http.get<any>('assets/weather-codes.json').subscribe((response) => {
       this.weatherCodes = response;
-      console.log('loadWeatherCodes', this.weatherCodes);
     });
   }
 
@@ -26,7 +25,6 @@ export class WeatherCodeService {
       .get<any>('assets/weather-icons-mapping.json')
       .subscribe((response) => {
         this.weatherIconsName = response;
-        console.log('loadWeatherIconsName', this.weatherIconsName);
       });
   }
 

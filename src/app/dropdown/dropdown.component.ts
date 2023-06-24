@@ -30,20 +30,11 @@ export class DropdownComponent {
 
   setSelectedCity(city: string) {
     const coordinates = this.cityLocations[city].location;
-    // this.citySelectService.setSelectedCity(city, coordinates);
-    // this.weatherService.getCityWeather(city, coordinates.lat, coordinates.lng);
-
-    // const coordinates = this.cityLocations[city].location;
     const storedCityWeather = this.storageService.selectCityWeather(city);
 
     if (storedCityWeather && this.storageService.checkTimestamp(city)) {
-      console.log('Using stored data');
-      // Використовувати збережені дані з localStorage
       this.citySelectService.setSelectedCity(city, coordinates);
     } else {
-      console.log('Using API data');
-      // Отримати нові дані з API
-      // this.citySelectService.setSelectedCity(city, coordinates);
       this.weatherService.getCityWeather(
         city,
         coordinates.lat,
