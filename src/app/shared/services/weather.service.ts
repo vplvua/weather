@@ -6,13 +6,7 @@ import {
 } from '@angular/common/http';
 
 import { environment } from 'src/environment';
-import {
-  BehaviorSubject,
-  Observable,
-  Subject,
-  catchError,
-  throwError,
-} from 'rxjs';
+import { BehaviorSubject, Observable, catchError, throwError } from 'rxjs';
 import { CityWeather } from '../interfaces/city-weather.interface';
 import { StorageService } from './storage.service';
 
@@ -22,7 +16,6 @@ import { StorageService } from './storage.service';
 export class WeatherService {
   url: string = environment.tomorrowUrl;
   token: string = environment.tomorrowToken;
-  // location = [50.4501, 30.5234];
   fields = [
     'precipitationProbability',
     'windSpeed',
@@ -37,7 +30,15 @@ export class WeatherService {
     {
       city: 'Kyiv',
       timestamp: 0,
-      weather: [],
+      weather: [
+        {
+          humidity: 0,
+          precipitationProbability: 0,
+          temperature: 0,
+          weatherCode: 0,
+          windSpeed: 0,
+        },
+      ],
     }
   );
 

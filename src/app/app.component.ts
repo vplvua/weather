@@ -73,29 +73,9 @@ export class AppComponent {
     }
   }
 
-  // private loadCityWeather() {
-  //   this.subscription.add(
-  //     this.citySelectService.getSelectedCity().subscribe((city) => {
-  //       this.selectedCity = city.name;
-  //       this.weatherService.getCityWeather(
-  //         city.name,
-  //         city.coordinates.lat,
-  //         city.coordinates.lng
-  //       );
-  //     })
-  //   );
-
-  //   this.subscription.add(
-  //     this.weatherService.getCityWeather$().subscribe((cityWeather) => {
-  //       this.cityWeather = cityWeather;
-  //     })
-  //   );
-  // }
-
   ngOnInit() {
     this.loadWeatherCodes();
     this.initializeCityWeather();
-    // this.loadCityWeather();
   }
 
   ngOnDestroy() {

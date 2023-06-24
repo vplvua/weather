@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { UnitSystem } from '../shared/unit-system.enum';
@@ -14,7 +14,7 @@ import { StorageService } from '../shared/services/storage.service';
   templateUrl: './current-weather.component.html',
   styleUrls: ['./current-weather.component.scss'],
 })
-export class CurrentWeatherComponent {
+export class CurrentWeatherComponent implements OnInit, OnDestroy {
   @Input() unitSystem: UnitSystem;
   currentDate: Date = new Date();
   weatherIcon = 'sunny';

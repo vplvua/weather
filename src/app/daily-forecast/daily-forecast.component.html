@@ -4,7 +4,7 @@
       <p>PRECIPITATION</p>
     </div>
     <div class="col-4">
-      <p>0%</p>
+      <p>{{ cityWeather.weather[0].precipitationProbability }}%</p>
     </div>
   </div>
   <div class="row features">
@@ -12,7 +12,7 @@
       <p>Humidity</p>
     </div>
     <div class="col-4">
-      <p>80%</p>
+      <p>{{ cityWeather.weather[0].humidity }}%</p>
     </div>
   </div>
   <div class="row features">
@@ -20,20 +20,30 @@
       <p>Wind</p>
     </div>
     <div class="col-4">
-      <p>{{ 5 | speedConversion : unitSystem | speedUnit : unitSystem }}</p>
+      <p>
+        {{
+          cityWeather.weather[0].windSpeed
+            | speedConversion : unitSystem
+            | speedUnit : unitSystem
+        }}
+      </p>
     </div>
   </div>
   <div class="row cards">
     <div class="col-md">
       <div class="card text-center">
         <div class="card-body">
-          <h5 class="card-title hour">12:00</h5>
+          <h5 class="card-title hour">{{ getTime(1) }}</h5>
           <div class="weather-icon">
-            <img appWeatherIcon [weatherIcon]="weatherIcon" class="icon" />
+            <img
+              appWeatherIcon
+              [weatherIcon]="getWeatherIcon(1)"
+              class="icon"
+            />
           </div>
           <p class="card-text temperature">
             {{
-              temperature[0]
+              getTemperature(1)
                 | temperatureConversion : unitSystem
                 | temperatureUnit : unitSystem
             }}
@@ -44,13 +54,17 @@
     <div class="col-md text-center">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title hour">13:00</h5>
+          <h5 class="card-title hour">{{ getTime(2) }}</h5>
           <div class="weather-icon">
-            <img appWeatherIcon [weatherIcon]="weatherIcon" class="icon" />
+            <img
+              appWeatherIcon
+              [weatherIcon]="getWeatherIcon(2)"
+              class="icon"
+            />
           </div>
           <p class="card-text temperature">
             {{
-              temperature[1]
+              getTemperature(2)
                 | temperatureConversion : unitSystem
                 | temperatureUnit : unitSystem
             }}
@@ -61,13 +75,17 @@
     <div class="col-md text-center">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title hour">14:00</h5>
+          <h5 class="card-title hour">{{ getTime(3) }}</h5>
           <div class="weather-icon">
-            <img appWeatherIcon [weatherIcon]="weatherIcon" class="icon" />
+            <img
+              appWeatherIcon
+              [weatherIcon]="getWeatherIcon(3)"
+              class="icon"
+            />
           </div>
           <p class="card-text temperature">
             {{
-              temperature[2]
+              getTemperature(3)
                 | temperatureConversion : unitSystem
                 | temperatureUnit : unitSystem
             }}
@@ -78,13 +96,17 @@
     <div class="col-md text-center">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title hour">15:00</h5>
+          <h5 class="card-title hour">{{ getTime(4) }}</h5>
           <div class="weather-icon">
-            <img appWeatherIcon [weatherIcon]="weatherIcon" class="icon" />
+            <img
+              appWeatherIcon
+              [weatherIcon]="getWeatherIcon(4)"
+              class="icon"
+            />
           </div>
           <p class="card-text temperature">
             {{
-              temperature[3]
+              getTemperature(4)
                 | temperatureConversion : unitSystem
                 | temperatureUnit : unitSystem
             }}
