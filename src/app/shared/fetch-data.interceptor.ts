@@ -19,7 +19,7 @@ export class FetchDataInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       filter((event) => event.type === HttpEventType.Response),
       tap((val) => {
-        console.log('response from server', val);
+        // console.log('response from server', val);
       })
     );
   }

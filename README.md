@@ -1,6 +1,22 @@
-# Weather
+# The Weather App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.5.
+A web application that allows you to view weather forecasts for different cities. Only the current day's data is displayed.
+
+Dropdown is used to select the city - this was a requirement of the test task. When you select a city, the weather forecast data changes.
+
+Bootstrap library is used for design - the use of the library was also a requirement of the test task. However, I used the library for responsive design and used my own SCSS styles for styling.
+
+Data is taken from the API https://www.tomorrow.io/ using HttpClient.
+
+Weather information is cached in LocalStorage to reduce the number of API requests.
+
+There is a possibility to choose units of measurement.
+
+In addition to components, services, pipes, and the cusotm directive are used.
+
+Angular CLI version 15.2.5
+Bootstrap 5.3.0
+TypeScript 4.9.4
 
 ## Development server
 
