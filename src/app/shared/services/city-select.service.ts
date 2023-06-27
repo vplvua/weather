@@ -18,7 +18,7 @@ export class CitySelectService {
 
   constructor() {}
 
-  setSelectedCity(city: string, coordinates: Coordinates) {
+  setSelectedCity(city: string, coordinates: Coordinates): void {
     const selectedCity: City = {
       name: city,
       coordinates: coordinates,

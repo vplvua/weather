@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { UnitSystem } from './shared/unit-system.enum';
 import { WeatherService } from './shared/services/weather.service';
-import { WeatherCodeService } from './shared/services/weather-code.service';
 import { CityWeather } from './shared/interfaces/city-weather.interface';
 import { CitySelectService } from './shared/services/city-select.service';
 import { StorageService } from './shared/services/storage.service';
@@ -14,18 +13,16 @@ import { StorageService } from './shared/services/storage.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   toggleUnitSystem = new FormControl(false);
   unitSystem: UnitSystem;
-  cityWeather!: CityWeather;
-  weatherCodes!: { [code: string]: string };
-  selectedCity!: string;
+  cityWeather!: CityWeather | undefined;
+
   subscription: Subscription = new Subscription();
 
   constructor(
-    private citySelectService: CitySelectService,
     private weatherService: WeatherService,
-    private weatherCodeService: WeatherCodeService,
+    private citySelectService: CitySelectService,
     private storageService: StorageService
   ) {
     this.toggleUnitSystem.valueChanges.subscribe((value) => {
@@ -39,46 +36,36 @@ export class AppComponent {
     this.unitSystem = UnitSystem.Metric;
   }
 
-  private loadWeatherCodes() {
+  private initializeCityWeather(): void {
     this.subscription.add(
-      this.weatherCodeService.getWeatherCodes().subscribe((response) => {
-        this.weatherCodes = response;
+      this.citySelectService.getSelectedCity().subscribe((selectedCity) => {
+        const checkTimestampStamp = this.storageService.checkTimestamp(
+          selectedCity.name
+        );
+
+        if (!checkTimestampStamp) {
+          this.weatherService.getCityWeather(
+            selectedCity.name,
+            selectedCity.coordinates.lat,
+            selectedCity.coordinates.lng
+          );
+        } else {
+          this.weatherService.updateCityWeather(selectedCity.name);
+        }
+      })
+    );
+    this.subscription.add(
+      this.weatherService.getCityWeather$().subscribe((cityWeather) => {
+        this.cityWeather = cityWeather;
       })
     );
   }
 
-  private initializeCityWeather() {
-    const selectedCity = this.citySelectService.getSelectedCitySync();
-    const storedCityWeather = this.storageService.selectCityWeather(
-      selectedCity.name
-    );
-
-    if (
-      storedCityWeather &&
-      !this.storageService.checkTimestamp(selectedCity.name)
-    ) {
-      this.cityWeather = storedCityWeather;
-    } else {
-      this.weatherService.getCityWeather(
-        selectedCity.name,
-        selectedCity.coordinates.lat,
-        selectedCity.coordinates.lng
-      );
-      this.subscription.add(
-        this.weatherService.getCityWeather$().subscribe((cityWeather) => {
-          this.cityWeather = cityWeather;
-          this.storageService.updateCityWeather(cityWeather);
-        })
-      );
-    }
-  }
-
-  ngOnInit() {
-    this.loadWeatherCodes();
+  ngOnInit(): void {
     this.initializeCityWeather();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 }

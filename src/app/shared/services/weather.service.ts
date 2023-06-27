@@ -4,11 +4,12 @@ import {
   HttpErrorResponse,
   HttpParams,
 } from '@angular/common/http';
+import { BehaviorSubject, Observable, catchError, throwError } from 'rxjs';
 
 import { environment } from 'src/environment';
-import { BehaviorSubject, Observable, catchError, throwError } from 'rxjs';
 import { CityWeather } from '../interfaces/city-weather.interface';
 import { StorageService } from './storage.service';
+import { WeatherCodeService } from './weather-code.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +38,8 @@ export class WeatherService {
           temperature: 0,
           weatherCode: 0,
           windSpeed: 0,
+          nameIconFile: 'sunny',
+          weatherDescription: '',
         },
       ],
     }
@@ -44,7 +47,8 @@ export class WeatherService {
 
   constructor(
     private http: HttpClient,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private weatherCodeService: WeatherCodeService
   ) {}
 
   getCityWeather(city: string, lat: number, lng: number) {
@@ -60,7 +64,9 @@ export class WeatherService {
       .get<any>(this.url, { params })
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          return throwError('Помилка при отриманні даних з сервера');
+          return throwError(
+            () => new Error('Помилка при отриманні даних з сервера')
+          );
         })
       )
       .subscribe((response) => {
@@ -88,6 +94,13 @@ export class WeatherService {
               temperature: interval.values.temperature,
               weatherCode: interval.values.weatherCode,
               windSpeed: interval.values.windSpeed,
+              nameIconFile: this.weatherCodeService.getWeatherCodeIcon(
+                interval.values.weatherCode
+              ),
+              weatherDescription:
+                this.weatherCodeService.getWeatherCodeDescription(
+                  interval.values.weatherCode
+                ),
             })
           ),
         };
@@ -99,5 +112,13 @@ export class WeatherService {
 
   getCityWeather$(): Observable<CityWeather> {
     return this.cityWeather$.asObservable();
+  }
+
+  updateCityWeather(city: string): void {
+    const existingCityWeather = this.storageService.selectCityWeather(city);
+
+    if (existingCityWeather) {
+      this.cityWeather$.next(existingCityWeather);
+    }
   }
 }

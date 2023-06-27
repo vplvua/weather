@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { CurrentWeatherComponent } from './current-weather/current-weather.component';
@@ -15,6 +15,7 @@ import { SpeedUnitPipe } from './shared/pipes/speed-unit.pipe';
 import { WeatherIconDirective } from './shared/weather-icon.directive';
 import { WeatherService } from './shared/services/weather.service';
 import { WeatherCodeService } from './shared/services/weather-code.service';
+import { FetchDataInterceptor } from './shared/fetch-data.interceptor';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,15 @@ import { WeatherCodeService } from './shared/services/weather-code.service';
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [WeatherService, WeatherCodeService],
+  providers: [
+    WeatherService,
+    WeatherCodeService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: FetchDataInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
   schemas: [],
 })

@@ -4,6 +4,8 @@ export interface WeatherData {
   temperature: number;
   weatherCode: number;
   windSpeed: number;
+  nameIconFile: string;
+  weatherDescription: string;
 }
 
 export interface CityWeather {

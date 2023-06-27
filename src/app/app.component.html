@@ -1,24 +1,29 @@
-<main class="container">
-  <div class="row">
-    <div class="col-md-5 no-padding">
-      <app-current-weather [unitSystem]="unitSystem"></app-current-weather>
+<ng-container *ngIf="cityWeather; else loadingSpinner">
+  <main class="container">
+    <div class="row">
+      <div class="col-md-5 no-padding">
+        <app-current-weather [unitSystem]="unitSystem"></app-current-weather>
+      </div>
+      <div class="col-md-7">
+        <app-daily-forecast [unitSystem]="unitSystem"></app-daily-forecast>
+      </div>
     </div>
-    <div class="col-md-7">
-      <app-daily-forecast [unitSystem]="unitSystem"></app-daily-forecast>
+  </main>
+  <div class="container options">
+    <div class="form-check form-switch">
+      <input
+        [formControl]="toggleUnitSystem"
+        class="form-check-input"
+        type="checkbox"
+        role="switch"
+        id="flexSwitchCheckDefault"
+      />
+      <label class="form-check-label" for="flexSwitchCheckDefault">{{
+        unitSystem === "metric" ? "Imperial" : "Metric"
+      }}</label>
     </div>
   </div>
-</main>
-<div class="container options">
-  <div class="form-check form-switch">
-    <input
-      [formControl]="toggleUnitSystem"
-      class="form-check-input"
-      type="checkbox"
-      role="switch"
-      id="flexSwitchCheckDefault"
-    />
-    <label class="form-check-label" for="flexSwitchCheckDefault">{{
-      unitSystem === "metric" ? "Imperial" : "Metric"
-    }}</label>
-  </div>
-</div>
+</ng-container>
+<ng-template #loadingSpinner>
+  <div><i class="fa fa-spinner fa-spin"></i> Loading...</div>
+</ng-template>

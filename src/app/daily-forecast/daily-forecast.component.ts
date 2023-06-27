@@ -3,9 +3,6 @@ import { Subscription } from 'rxjs';
 
 import { UnitSystem } from '../shared/unit-system.enum';
 import { CityWeather } from '../shared/interfaces/city-weather.interface';
-import { CitySelectService } from '../shared/services/city-select.service';
-import { StorageService } from '../shared/services/storage.service';
-import { WeatherCodeService } from '../shared/services/weather-code.service';
 import { WeatherService } from '../shared/services/weather.service';
 
 @Component({
@@ -15,61 +12,46 @@ import { WeatherService } from '../shared/services/weather.service';
 })
 export class DailyForecastComponent implements OnInit, OnDestroy {
   @Input() unitSystem: UnitSystem;
-  temperature = [26.1, 26.7, 27.5, 28.2];
-  cityWeather: CityWeather = {
-    city: 'Kyiv',
-    timestamp: 0,
-    weather: [
-      {
-        humidity: 0,
-        precipitationProbability: 0,
-        temperature: 0,
-        weatherCode: 0,
-        windSpeed: 0,
-      },
-    ],
-  };
+  cityWeather!: CityWeather;
 
   private subscription = new Subscription();
 
-  constructor(
-    private citySelectService: CitySelectService,
-    private storageService: StorageService,
-    private weatherCodeService: WeatherCodeService,
-    private weatherService: WeatherService
-  ) {
+  constructor(private weatherService: WeatherService) {
     this.unitSystem = UnitSystem.Metric;
   }
 
   ngOnInit() {
     this.subscription.add(
-      this.citySelectService.getSelectedCity().subscribe((selectedCity) => {
-        const storedCityWeather = this.storageService.selectCityWeather(
-          selectedCity.name
-        );
-        if (
-          storedCityWeather &&
-          this.storageService.checkTimestamp(selectedCity.name)
-        ) {
-          this.cityWeather = storedCityWeather;
-        }
+      this.weatherService.getCityWeather$().subscribe((cityWeather) => {
+        this.cityWeather = cityWeather;
       })
     );
   }
 
-  getWeatherIcon(index: number): string {
-    return (
-      this.weatherCodeService.getWeatherCodeIcon(
-        this.cityWeather.weather[index].weatherCode
-      ) || 'sunny'
+  сheckCityWeather(index: number): boolean {
+    return !!(
+      this.cityWeather &&
+      this.cityWeather.weather &&
+      this.cityWeather.weather[index]
     );
   }
 
+  getWeatherIcon(index: number): string {
+    if (this.сheckCityWeather(index)) {
+      return this.cityWeather.weather[index].nameIconFile;
+    }
+    return 'sunny';
+  }
+
   getTemperature(index: number): number {
-    return this.cityWeather.weather[index].temperature;
+    if (this.сheckCityWeather(index)) {
+      return this.cityWeather.weather[index].temperature;
+    }
+    return 0;
   }
 
   getTime(hoursToAdd: number): string {
+    if (!this.cityWeather) return '';
     const date = new Date(this.cityWeather.timestamp * 1000);
     date.setHours(date.getHours() + hoursToAdd);
     const options: {} = {

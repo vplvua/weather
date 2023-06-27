@@ -30,10 +30,11 @@ export class DropdownComponent {
 
   setSelectedCity(city: string) {
     const coordinates = this.cityLocations[city].location;
-    const storedCityWeather = this.storageService.selectCityWeather(city);
+    const checkTimestampStamp = this.storageService.checkTimestamp(city);
 
-    if (storedCityWeather && this.storageService.checkTimestamp(city)) {
+    if (checkTimestampStamp) {
       this.citySelectService.setSelectedCity(city, coordinates);
+      this.weatherService.updateCityWeather(city);
     } else {
       this.weatherService.getCityWeather(
         city,

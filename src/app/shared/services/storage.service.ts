@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 import { CityWeather } from '../interfaces/city-weather.interface';
+import { CitySelectService } from './city-select.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StorageService {
-  weatherData: Subject<CityWeather[]> = new Subject<CityWeather[]>();
+  weatherData$: Subject<CityWeather[]> = new Subject<CityWeather[]>();
   private _weatherData: CityWeather[] = [];
 
-  constructor() {
+  subscription = new Subscription();
+
+  constructor(private citySelectService: CitySelectService) {
     this.fetchWeatherData();
   }
 
@@ -20,12 +23,12 @@ export class StorageService {
 
   set weatherDataValue(weather: CityWeather[]) {
     this._weatherData = weather;
-    this.weatherData.next(this._weatherData);
+    this.weatherData$.next(this._weatherData);
   }
 
   clearWeatherData(): void {
     this._weatherData = [];
-    this.weatherData.next(this._weatherData);
+    this.weatherData$.next(this._weatherData);
     this.storeWeatherData();
   }
 
@@ -37,7 +40,7 @@ export class StorageService {
     const weatherData = JSON.parse(localStorage.getItem('weatherData') || '[]');
     if (weatherData) {
       this._weatherData = weatherData;
-      this.weatherData.next(this._weatherData);
+      this.weatherData$.next(this._weatherData);
     }
   }
 
@@ -46,39 +49,38 @@ export class StorageService {
   }
 
   addCityWeather(cityWeather: CityWeather): void {
-    if (this.checkTimestamp(cityWeather.city)) {
-      return;
+    const checkTimestamp = this.checkTimestamp(cityWeather.city);
+
+    if (!checkTimestamp) {
+      this.updateCityWeather(cityWeather);
     }
+
     this._weatherData.push(cityWeather);
-    this.weatherData.next(this._weatherData);
+    this.weatherData$.next(this._weatherData);
     this.storeWeatherData();
   }
 
   updateCityWeather(cityWeather: CityWeather): void {
-    if (this.checkTimestamp(cityWeather.city)) {
-      return;
-    }
     const index = this._weatherData.findIndex(
       (cityWeatherData) => cityWeatherData.city === cityWeather.city
     );
-    if (index !== -1) {
-      this._weatherData[index] = cityWeather;
-      this.weatherData.next(this._weatherData);
-      this.storeWeatherData();
-    }
+
+    this._weatherData[index] = cityWeather;
+    this.weatherData$.next(this._weatherData);
+    this.storeWeatherData();
   }
 
   checkTimestamp(city: string): boolean {
-    const index = this._weatherData.findIndex(
-      (cityWeatherData) => cityWeatherData.city === city
-    );
-    if (index !== -1) {
-      const timestamp = this._weatherData[index].timestamp;
+    const existingCityWeather = this.selectCityWeather(city);
+
+    if (existingCityWeather) {
+      const timestamp = existingCityWeather.timestamp;
       const currentTimestamp = Math.floor(Date.now() / 1000);
       if (currentTimestamp - timestamp < 3600) {
         return true;
       }
     }
+
     return false;
   }
 }
